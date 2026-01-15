@@ -10,7 +10,20 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const rsvps = await kv.lrange("rsvps", 0, -1);
+        if (!process.env.KV_REST_API_URL) {
+            return NextResponse.json({ error: "Database not connected" }, { status: 500 });
+        }
+
+        const rawRsvps = await kv.lrange("rsvps", 0, -1);
+
+        // Parse strings back to objects
+        const rsvps = rawRsvps.map((item: any) => {
+            try {
+                return typeof item === 'string' ? JSON.parse(item) : item;
+            } catch (e) {
+                return item;
+            }
+        });
 
         const stats = {
             totalGuests: 0,
@@ -20,10 +33,10 @@ export async function GET(req: Request) {
         };
 
         rsvps.forEach((rsvp: any) => {
-            if (rsvp.status === "attending") {
+            if (rsvp && rsvp.status === "attending") {
                 stats.attending++;
-                stats.totalGuests += (rsvp.guests || 1);
-            } else {
+                stats.totalGuests += (Number(rsvp.guests) || 0);
+            } else if (rsvp && rsvp.status === "declined") {
                 stats.declined++;
             }
         });

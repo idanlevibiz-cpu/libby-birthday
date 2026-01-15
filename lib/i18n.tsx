@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-type Language = "en";
+type Language = "en" | "es";
 
 type Translations = {
     header: {
@@ -90,6 +90,48 @@ const translations: Record<Language, Translations> = {
             upload: "Upload Photo",
         },
     },
+    es: {
+        header: {
+            brand: "CUMPLEAÑOS DE LIBBY",
+        },
+        footer: {
+            developedBy: "Diseñado y Producido por Epica Events",
+        },
+        landing: {
+            cta: "Abrir Invitación",
+        },
+        eventInfo: {
+            title: "¡Libby Cumple 2!",
+            date: "Domingo, 18 de Enero, 2026",
+            time: "10:00 – 13:00",
+            location: "Piscina Astralis, Isla Verde",
+            welcomeMsg: "¡Oh Two-dless! No podemos creerlo, pero sí, ¡es verdad!\nÚnete a nosotros para una celebración mágica llena de alegría y brillos.",
+        },
+        rsvp: {
+            title: "RSVP",
+            fullName: "Nombre Completo",
+            attendance: "¿Vendrás?",
+            joyful: "¡Ahí estaré! 🎉",
+            regretful: "No podré ir",
+            guests: "Número de Invitados",
+            dietary: "Notas Dietéticas / Alergias",
+            declineMessage: "¡Te extrañaremos! 💕",
+            submit: "Confirmar Asistencia",
+            success: "¡Gracias! Tu respuesta ha sido guardada.",
+            error: "¡Ups! Algo salió mal. Por favor, intenta de nuevo.",
+        },
+        gifts: {
+            title: "Registro y Regalos",
+            card1Title: "Regalo PayPal",
+            card1Desc: "Enviar un regalo con PayPal",
+            card2Title: "Tu Presencia",
+            card2Desc: "Tu presencia es el mejor regalo 💕",
+        },
+        gallery: {
+            title: "Galería",
+            upload: "Subir Foto",
+        },
+    },
 };
 
 interface LanguageContextType {
@@ -102,10 +144,24 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-    const [lang] = useState<Language>("en");
+    const [lang, setLang] = useState<Language>("en");
+
+    // Persist language selection
+    useEffect(() => {
+        const savedLang = localStorage.getItem("epica-lang") as Language;
+        if (savedLang) {
+            setLang(savedLang);
+        }
+    }, []);
+
+    const toggleLang = () => {
+        const newLang = lang === "en" ? "es" : "en";
+        setLang(newLang);
+        localStorage.setItem("epica-lang", newLang);
+    };
 
     return (
-        <LanguageContext.Provider value={{ lang, setLang: () => { }, t: translations[lang], toggleLang: () => { } }}>
+        <LanguageContext.Provider value={{ lang, setLang, t: translations[lang], toggleLang }}>
             {children}
         </LanguageContext.Provider>
     );

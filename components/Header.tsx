@@ -1,6 +1,8 @@
 "use client";
 
 import { useLanguage } from "@/lib/i18n";
+import { LanguageToggle } from "./LanguageToggle";
+
 export function Header() {
     const { t } = useLanguage();
 
@@ -14,6 +16,9 @@ export function Header() {
             >
                 {t.header.brand}
             </a>
+            <div className="pointer-events-auto">
+                <LanguageToggle />
+            </div>
         </header>
     );
 }

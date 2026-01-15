@@ -1,92 +1,50 @@
 import { useState, useEffect, useRef } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
-declare global {
-    interface Window {
-        onYouTubeIframeAPIReady: () => void;
-        YT: any;
-    }
-}
-
 interface MusicPlayerProps {
     isPlaying: boolean;
-    videoUrl?: string;
+    videoUrl?: string; // Kept for compatibility but unused
 }
 
-export function MusicPlayer({ isPlaying, videoUrl }: MusicPlayerProps) {
+export function MusicPlayer({ isPlaying }: MusicPlayerProps) {
     const [isMuted, setIsMuted] = useState(true);
     const [hasInteracted, setHasInteracted] = useState(false);
-    const playerRef = useRef<any>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const audioRef = useRef<HTMLAudioElement>(null);
 
-    const getYouTubeId = (url: string) => {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : "F_fO2YI4g64";
-    };
-
-    const videoId = videoUrl ? getYouTubeId(videoUrl) : "F_fO2YI4g64";
-
-    // Load YouTube API
+    // Sync play state with envelope interaction
     useEffect(() => {
-        if (!window.YT) {
-            const tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            const firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
-        }
-
-        window.onYouTubeIframeAPIReady = () => {
-            playerRef.current = new window.YT.Player('youtube-player', {
-                videoId: videoId,
-                playerVars: {
-                    autoplay: 1,
-                    mute: 1,
-                    playsinline: 1,
-                    loop: 1,
-                    playlist: videoId,
-                    controls: 0,
-                    enablejsapi: 1
-                },
-                events: {
-                    onReady: (event: any) => {
-                        if (isPlaying) {
-                            event.target.playVideo();
-                        }
-                    }
-                }
+        if (isPlaying && audioRef.current) {
+            audioRef.current.play().catch(e => {
+                console.log("Autoplay blocked, waiting for user interaction");
             });
-        };
-    }, []);
-
-    // Sync play state
-    useEffect(() => {
-        if (isPlaying && playerRef.current?.playVideo) {
-            playerRef.current.playVideo();
             setHasInteracted(true);
         }
     }, [isPlaying]);
 
     const toggleMute = () => {
-        if (!playerRef.current) return;
+        if (!audioRef.current) return;
 
         if (isMuted) {
-            playerRef.current.unMute();
-            playerRef.current.setVolume(100);
-            playerRef.current.playVideo();
+            audioRef.current.muted = false;
+            audioRef.current.play().catch(console.error);
             setIsMuted(false);
         } else {
-            playerRef.current.mute();
+            audioRef.current.muted = true;
             setIsMuted(true);
         }
     };
 
     return (
         <>
-            {/* PLAYER CONTAINER */}
-            <div className="fixed top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none -z-50 opacity-0">
-                <div id="youtube-player" />
-            </div>
+            {/* LOCAL AUDIO PLAYER */}
+            <audio
+                ref={audioRef}
+                src="/music.mp3"
+                loop
+                muted={isMuted}
+                playsInline
+                className="hidden"
+            />
 
             {/* FLOATING CONTROL */}
             {hasInteracted && (

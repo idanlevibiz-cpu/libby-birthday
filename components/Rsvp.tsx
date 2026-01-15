@@ -27,9 +27,13 @@ export function Rsvp() {
             });
             if (res.ok) {
                 setSubmitted(true);
+            } else {
+                const data = await res.json();
+                alert(t.rsvp.error + (data.error ? ": " + data.error : ""));
             }
         } catch (e) {
             console.error("Failed to submit RSVP:", e);
+            alert(t.rsvp.error);
         } finally {
             setSubmitting(false);
         }

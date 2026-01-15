@@ -168,25 +168,35 @@ export function Gallery() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-lg flex items-center justify-center p-4 md:p-10"
+                        className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 md:p-10 touch-none"
                         onClick={() => setSelectedImage(null)}
                     >
+                        {/* Improved Close Button for iPhone / Notch */}
                         <button
-                            className="absolute top-6 right-6 p-2 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors"
-                            onClick={() => setSelectedImage(null)}
+                            className="absolute top-10 right-6 md:top-8 md:right-8 z-[110] p-4 bg-white/20 rounded-full text-white hover:bg-white/30 transition-all shadow-lg active:scale-95"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedImage(null);
+                            }}
+                            title="Close"
                         >
                             <X className="w-8 h-8" />
                         </button>
 
                         <motion.img
-                            initial={{ scale: 0.8, opacity: 0 }}
+                            initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.8, opacity: 0 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
                             src={selectedImage}
                             alt="Enlarged gallery"
-                            className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
+                            className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
                             onClick={(e) => e.stopPropagation()}
                         />
+
+                        {/* Helper text for mobile */}
+                        <p className="mt-4 text-white/40 text-xs font-bold uppercase tracking-widest pointer-events-none">
+                            Tap anywhere to close
+                        </p>
                     </motion.div>
                 )}
             </AnimatePresence>

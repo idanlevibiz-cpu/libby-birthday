@@ -17,18 +17,22 @@ export function MusicPlayer({ isPlaying, videoUrl }: MusicPlayerProps) {
         return (match && match[2].length === 11) ? match[2] : null;
     };
 
-    const videoId = videoUrl ? getYouTubeId(videoUrl) : "dQw4w9WgXcQ"; // Default placeholder if none provided
-
-    if (!isPlaying || !videoId) return null;
+    const videoId = videoUrl ? getYouTubeId(videoUrl) : "F_fO2YI4g64";
 
     return (
-        <div className="fixed opacity-0 pointer-events-none -z-50 w-0 h-0 overflow-hidden">
-            <iframe
-                ref={iframeRef}
-                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&controls=0`}
-                allow="autoplay"
-                title="Background Music"
-            />
+        <div
+            className="fixed top-0 left-0 w-[1px] h-[1px] opacity-0 pointer-events-none -z-50 overflow-hidden"
+            aria-hidden="true"
+        >
+            {isPlaying && videoId && (
+                <iframe
+                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&controls=0&mute=0&playsinline=1`}
+                    allow="autoplay; encrypted-media"
+                    title="Background Music"
+                    width="1"
+                    height="1"
+                />
+            )}
         </div>
     );
 }

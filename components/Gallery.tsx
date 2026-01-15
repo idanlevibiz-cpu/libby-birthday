@@ -121,33 +121,35 @@ export function Gallery() {
                         key={idx}
                         initial={{ opacity: 0, scale: 0.8 }}
                         whileInView={{ opacity: 1, scale: 1 }}
-                        className="aspect-square rounded-2xl overflow-hidden shadow-md border-2 border-white/50 relative group"
+                        className="aspect-square rounded-2xl overflow-hidden shadow-md border-2 border-white/50 relative group cursor-pointer"
+                        onClick={() => setSelectedImage(img)}
                     >
                         <img
                             src={img}
                             alt={`Gallery ${idx}`}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
 
-                        {/* Overlay Actions */}
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                            <button
-                                onClick={() => setSelectedImage(img)}
-                                className="p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-colors"
-                            >
-                                <Maximize2 className="w-6 h-6" />
-                            </button>
-                            <button
-                                onClick={() => handleDelete(img)}
-                                disabled={deleting === img}
-                                className="p-3 bg-red-500/80 backdrop-blur-md rounded-full text-white hover:bg-red-600 transition-colors disabled:opacity-50"
-                            >
-                                {deleting === img ? (
-                                    <Loader2 className="w-6 h-6 animate-spin" />
-                                ) : (
-                                    <Trash2 className="w-6 h-6" />
-                                )}
-                            </button>
+                        {/* Delete Button - Positioned separately in the corner */}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation(); // Prevent opening the lightbox
+                                handleDelete(img);
+                            }}
+                            disabled={deleting === img}
+                            className="absolute top-2 right-2 p-2 bg-red-500/80 backdrop-blur-md rounded-xl text-white hover:bg-red-600 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 sm:opacity-0"
+                            style={{ opacity: 'var(--mobile-opacity, 1)' }} // Fallback for mobile
+                        >
+                            {deleting === img ? (
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                            ) : (
+                                <Trash2 className="w-5 h-5" />
+                            )}
+                        </button>
+
+                        {/* Zoom Indicator (Optional visual hint) */}
+                        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                            <Maximize2 className="w-8 h-8 text-white/70" />
                         </div>
                     </motion.div>
                 ))}

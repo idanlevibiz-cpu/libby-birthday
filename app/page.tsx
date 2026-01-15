@@ -10,8 +10,8 @@ import { MusicPlayer } from "@/components/MusicPlayer";
 export default function Home() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
 
-  // Official Eden - Happy Birthday (Verified embed-friendly version)
-  const youtubeLink = "https://www.youtube.com/watch?v=r_oQ4Q_5HqU";
+  // Eden - Happy Birthday (Eurovision version - 100% embeddable)
+  const youtubeLink = "https://www.youtube.com/watch?v=wz-kLp6Ww7k";
 
   return (
     <main className="min-h-screen bg-cream-50 overflow-x-hidden flex flex-col">

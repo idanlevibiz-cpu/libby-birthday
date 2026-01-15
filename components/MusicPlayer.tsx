@@ -39,7 +39,7 @@ export function MusicPlayer({ isPlaying }: MusicPlayerProps) {
             {/* LOCAL AUDIO PLAYER */}
             <audio
                 ref={audioRef}
-                src="/music.mp3"
+                src="/happy-birthday.mp3"
                 loop
                 muted={isMuted}
                 playsInline

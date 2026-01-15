@@ -168,19 +168,18 @@ export function Gallery() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 md:p-10 touch-none"
+                        className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 md:p-10 cursor-pointer"
                         onClick={() => setSelectedImage(null)}
                     >
                         {/* Improved Close Button for iPhone / Notch */}
                         <button
-                            className="absolute top-10 right-6 md:top-8 md:right-8 z-[110] p-4 bg-white/20 rounded-full text-white hover:bg-white/30 transition-all shadow-lg active:scale-95"
+                            className="absolute top-12 right-6 md:top-8 md:right-8 z-[110] p-5 bg-white/20 rounded-full text-white hover:bg-white/30 transition-all shadow-lg active:scale-90"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedImage(null);
                             }}
-                            title="Close"
                         >
-                            <X className="w-8 h-8" />
+                            <X className="w-10 h-10" />
                         </button>
 
                         <motion.img
@@ -189,14 +188,13 @@ export function Gallery() {
                             exit={{ scale: 0.9, opacity: 0 }}
                             src={selectedImage}
                             alt="Enlarged gallery"
-                            className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
-                            onClick={(e) => e.stopPropagation()}
+                            className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl pointer-events-none"
                         />
 
-                        {/* Helper text for mobile */}
-                        <p className="mt-4 text-white/40 text-xs font-bold uppercase tracking-widest pointer-events-none">
+                        {/* Huge Tap to Close helper button */}
+                        <div className="mt-8 px-8 py-3 bg-white/10 rounded-full border border-white/20 text-white/60 text-sm font-black uppercase tracking-[0.2em] animate-pulse">
                             Tap anywhere to close
-                        </p>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

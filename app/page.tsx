@@ -10,8 +10,8 @@ import { MusicPlayer } from "@/components/MusicPlayer";
 export default function Home() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
 
-  // REPLACE THIS WITH THE USER'S YOUTUBE LINK
-  const youtubeLink = "https://www.youtube.com/watch?v=XqZsoesa55w";
+  // Official Eden - Happy Birthday
+  const youtubeLink = "https://www.youtube.com/watch?v=F_fO2YI4g64";
 
   return (
     <main className="min-h-screen bg-cream-50 overflow-x-hidden flex flex-col">

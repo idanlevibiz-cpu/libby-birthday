@@ -1,8 +1,6 @@
 "use client";
 
 import { useLanguage } from "@/lib/i18n";
-import { LanguageToggle } from "./LanguageToggle";
-
 export function Header() {
     const { t } = useLanguage();
 
@@ -12,13 +10,10 @@ export function Header() {
                 href="https://epicaevents.ai"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] uppercase tracking-[0.2em] text-emerald-900/60 hover:text-emerald-900 pointer-events-auto transition-colors"
+                className="text-[10px] uppercase tracking-[0.2em] text-pink-900/60 hover:text-pink-900 pointer-events-auto transition-colors font-bold"
             >
                 {t.header.brand}
             </a>
-            <div className="pointer-events-auto">
-                <LanguageToggle />
-            </div>
         </header>
     );
 }

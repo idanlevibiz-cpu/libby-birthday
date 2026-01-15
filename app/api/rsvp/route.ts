@@ -1,38 +1,27 @@
+import { kv } from "@vercel/kv";
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-
-const DATA_DIR = path.join(process.cwd(), "data");
-const RSVP_FILE = path.join(DATA_DIR, "rsvp.json");
-
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR);
-}
 
 export async function POST(req: Request) {
     try {
-        const body = await req.json();
+        const { name, guests, status, dietary } = await req.json();
 
-        // Load existing RSVPs
-        let rsvps = [];
-        if (fs.existsSync(RSVP_FILE)) {
-            const data = fs.readFileSync(RSVP_FILE, "utf-8");
-            rsvps = JSON.parse(data);
+        if (!name) {
+            return NextResponse.json({ success: false, error: "Name is required" }, { status: 400 });
         }
 
-        // Add new entry
-        const newRsvp = {
-            ...body,
-            id: Date.now(),
-            timestamp: new Date().toISOString(),
+        const rsvpEntry = {
+            id: Date.now().toString(),
+            name,
+            guests: guests || 1,
+            status: status || "attending", // "attending" or "declined"
+            dietary: dietary || "",
+            timestamp: new Date().toISOString()
         };
-        rsvps.push(newRsvp);
 
-        // Save back
-        fs.writeFileSync(RSVP_FILE, JSON.stringify(rsvps, null, 2));
+        // Push to a list called "rsvps"
+        await kv.lpush("rsvps", rsvpEntry);
 
-        return NextResponse.json({ success: true, rsvp: newRsvp });
+        return NextResponse.json({ success: true });
     } catch (error) {
         console.error("RSVP Error:", error);
         return NextResponse.json({ success: false, error: "Failed to save RSVP" }, { status: 500 });

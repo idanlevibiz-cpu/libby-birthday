@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-type Language = "en" | "es";
+type Language = "en";
 
 type Translations = {
     header: {
@@ -30,7 +30,6 @@ type Translations = {
         guests: string;
         dietary: string;
         declineMessage: string;
-        whatsappBtn: string;
         submit: string;
         success: string;
         error: string;
@@ -67,18 +66,17 @@ const translations: Record<Language, Translations> = {
             welcomeMsg: "Oh Two-dless! We can’t believe it, but yes, it’s true!\nJoin us for a magical celebration full of joy and sparkles.",
         },
         rsvp: {
-            title: "Join the Party (RSVP)",
-            fullName: "Guest Name",
-            attendance: "Will you come?",
-            joyful: "I'll be there! (Accept)",
-            regretful: "Can't make it (Decline)",
+            title: "RSVP",
+            fullName: "Full Name",
+            attendance: "Are you coming?",
+            joyful: "I'll be there! 🎉",
+            regretful: "Can't make it",
             guests: "Number of Guests",
-            dietary: "Dietary Notes",
-            declineMessage: "We'll miss you! Check out the gift registry below.",
-            whatsappBtn: "RSVP on WhatsApp",
-            submit: "Send RSVP",
-            success: "Yay! You're on the list!",
-            error: "Oops! Something went wrong. Try again.",
+            dietary: "Dietary Notes / Allergies",
+            declineMessage: "We'll miss you! 💕",
+            submit: "Confirm Attendance",
+            success: "Thank you! Your response has been saved.",
+            error: "Oops! Something went wrong. Please try again.",
         },
         gifts: {
             title: "Registry & Gifts",
@@ -90,49 +88,6 @@ const translations: Record<Language, Translations> = {
         gallery: {
             title: "Gallery",
             upload: "Upload Photo",
-        },
-    },
-    es: {
-        header: {
-            brand: "CUMPLEAÑOS DE LIBBY",
-        },
-        footer: {
-            developedBy: "Diseñado y Producido por Epica Events",
-        },
-        landing: {
-            cta: "Abrir Invitación",
-        },
-        eventInfo: {
-            title: "¡Libby Cumple 2!",
-            date: "Domingo, 18 de Enero, 2026",
-            time: "10:00 – 13:00",
-            location: "Piscina Astralis, Isla Verde",
-            welcomeMsg: "¡Oh Two-dless! No podemos creerlo, pero sí, ¡es verdad!\nÚnete a nosotros para una celebración mágica llena de alegría y brillos.",
-        },
-        rsvp: {
-            title: "Únete a la Fiesta (RSVP)",
-            fullName: "Nombre del Invitado",
-            attendance: "¿Vendrás?",
-            joyful: "¡Ahí estaré! (Aceptar)",
-            regretful: "No podré ir (Declinar)",
-            guests: "Número de Invitados",
-            dietary: "Notas Dietéticas",
-            declineMessage: "¡Te extrañaremos! Mira la lista de regalos abajo.",
-            whatsappBtn: "RSVP por WhatsApp",
-            submit: "Enviar RSVP",
-            success: "¡Yay! Estás en la lista.",
-            error: "¡Ups! Algo salió mal. Intenta de nuevo.",
-        },
-        gifts: {
-            title: "Registro y Regalos",
-            card1Title: "Regalo PayPal",
-            card1Desc: "Enviar un regalo con PayPal",
-            card2Title: "Tu Presencia",
-            card2Desc: "Tu presencia es el mejor regalo 💕",
-        },
-        gallery: {
-            title: "Galería",
-            upload: "Subir Foto",
         },
     },
 };
@@ -147,24 +102,10 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-    const [lang, setLang] = useState<Language>("en");
-
-    // Persist language selection
-    useEffect(() => {
-        const savedLang = localStorage.getItem("epica-lang") as Language;
-        if (savedLang) {
-            setLang(savedLang);
-        }
-    }, []);
-
-    const toggleLang = () => {
-        const newLang = lang === "en" ? "es" : "en";
-        setLang(newLang);
-        localStorage.setItem("epica-lang", newLang);
-    };
+    const [lang] = useState<Language>("en");
 
     return (
-        <LanguageContext.Provider value={{ lang, setLang, t: translations[lang], toggleLang }}>
+        <LanguageContext.Provider value={{ lang, setLang: () => { }, t: translations[lang], toggleLang: () => { } }}>
             {children}
         </LanguageContext.Provider>
     );

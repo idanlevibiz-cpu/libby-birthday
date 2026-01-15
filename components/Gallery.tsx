@@ -12,6 +12,12 @@ export function Gallery() {
     const [uploading, setUploading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [deleting, setDeleting] = useState<string | null>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        const pass = localStorage.getItem("admin-pass");
+        if (pass === "7789") setIsAdmin(true);
+    }, []);
 
     const fetchImages = async () => {
         try {
@@ -50,9 +56,9 @@ export function Gallery() {
     };
 
     const handleDelete = async (url: string) => {
-        const password = prompt("אנא הזן סיסמה למחיקה:");
-        if (!password) return;
+        if (!confirm("Delete this photo?")) return;
 
+        const password = localStorage.getItem("admin-pass");
         setDeleting(url);
         try {
             const res = await fetch("/api/delete", {
@@ -64,11 +70,10 @@ export function Gallery() {
                 fetchImages();
             } else {
                 const data = await res.json();
-                alert(data.error || "המחיקה נכשלה");
+                console.error(data.error || "Delete failed");
             }
         } catch (e) {
             console.error("Delete failed", e);
-            alert("שגיאה בחיבור לשרת");
         } finally {
             setDeleting(null);
         }
@@ -130,22 +135,23 @@ export function Gallery() {
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
 
-                        {/* Delete Button - Positioned separately in the corner */}
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation(); // Prevent opening the lightbox
-                                handleDelete(img);
-                            }}
-                            disabled={deleting === img}
-                            className="absolute top-2 right-2 p-2 bg-red-500/80 backdrop-blur-md rounded-xl text-white hover:bg-red-600 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 sm:opacity-0"
-                            style={{ opacity: 'var(--mobile-opacity, 1)' }} // Fallback for mobile
-                        >
-                            {deleting === img ? (
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                            ) : (
-                                <Trash2 className="w-5 h-5" />
-                            )}
-                        </button>
+                        {/* Delete Button - Admin Only */}
+                        {isAdmin && (
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevent opening the lightbox
+                                    handleDelete(img);
+                                }}
+                                disabled={deleting === img}
+                                className="absolute top-2 right-2 p-2 bg-red-500/80 backdrop-blur-md rounded-xl text-white hover:bg-red-600 transition-all z-10"
+                            >
+                                {deleting === img ? (
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                ) : (
+                                    <Trash2 className="w-5 h-5" />
+                                )}
+                            </button>
+                        )}
 
                         {/* Zoom Indicator (Optional visual hint) */}
                         <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">

@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
-import { Loader2, ImageIcon, Camera } from "lucide-react";
+import { Loader2, ImageIcon, Camera, X, Trash2, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Gallery() {
     const { t } = useLanguage();
     const [images, setImages] = useState<string[]>([]);
     const [uploading, setUploading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [deleting, setDeleting] = useState<string | null>(null);
 
     const fetchImages = async () => {
         try {
@@ -44,6 +46,31 @@ export function Gallery() {
             console.error("Upload failed", e);
         } finally {
             setUploading(false);
+        }
+    };
+
+    const handleDelete = async (url: string) => {
+        const password = prompt("אנא הזן סיסמה למחיקה:");
+        if (!password) return;
+
+        setDeleting(url);
+        try {
+            const res = await fetch("/api/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url, password }),
+            });
+            if (res.ok) {
+                fetchImages();
+            } else {
+                const data = await res.json();
+                alert(data.error || "המחיקה נכשלה");
+            }
+        } catch (e) {
+            console.error("Delete failed", e);
+            alert("שגיאה בחיבור לשרת");
+        } finally {
+            setDeleting(null);
         }
     };
 
@@ -94,16 +121,67 @@ export function Gallery() {
                         key={idx}
                         initial={{ opacity: 0, scale: 0.8 }}
                         whileInView={{ opacity: 1, scale: 1 }}
-                        className="aspect-square rounded-2xl overflow-hidden shadow-md border-2 border-white/50"
+                        className="aspect-square rounded-2xl overflow-hidden shadow-md border-2 border-white/50 relative group"
                     >
                         <img
                             src={img}
                             alt={`Gallery ${idx}`}
-                            className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                            className="w-full h-full object-cover"
                         />
+
+                        {/* Overlay Actions */}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                            <button
+                                onClick={() => setSelectedImage(img)}
+                                className="p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-colors"
+                            >
+                                <Maximize2 className="w-6 h-6" />
+                            </button>
+                            <button
+                                onClick={() => handleDelete(img)}
+                                disabled={deleting === img}
+                                className="p-3 bg-red-500/80 backdrop-blur-md rounded-full text-white hover:bg-red-600 transition-colors disabled:opacity-50"
+                            >
+                                {deleting === img ? (
+                                    <Loader2 className="w-6 h-6 animate-spin" />
+                                ) : (
+                                    <Trash2 className="w-6 h-6" />
+                                )}
+                            </button>
+                        </div>
                     </motion.div>
                 ))}
             </div>
+
+            {/* LIGHTBOX MODAL */}
+            <AnimatePresence>
+                {selectedImage && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-lg flex items-center justify-center p-4 md:p-10"
+                        onClick={() => setSelectedImage(null)}
+                    >
+                        <button
+                            className="absolute top-6 right-6 p-2 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors"
+                            onClick={() => setSelectedImage(null)}
+                        >
+                            <X className="w-8 h-8" />
+                        </button>
+
+                        <motion.img
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            src={selectedImage}
+                            alt="Enlarged gallery"
+                            className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

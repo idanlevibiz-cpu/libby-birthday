@@ -40,6 +40,11 @@ type Translations = {
         card1Desc: string;
         card2Title: string;
         card2Desc: string;
+        giftTiers: {
+            t20: string;
+            t30: string;
+            t40: string;
+        };
     };
     gallery: {
         title: string;
@@ -84,6 +89,11 @@ const translations: Record<Language, Translations> = {
             card1Desc: "Send a Gift with PayPal",
             card2Title: "Your Presence",
             card2Desc: "Your presence is the greatest gift 💕",
+            giftTiers: {
+                t20: "A toy for Libby (and 5 minutes of peace for us!) 🧸",
+                t30: "A stylish dress from Zara (fashion first!) 👗",
+                t40: "Parent's Survival Kit (Coffee + Wine + Earplugs) ☕🍷",
+            },
         },
         gallery: {
             title: "Gallery",
@@ -126,6 +136,11 @@ const translations: Record<Language, Translations> = {
             card1Desc: "Enviar un regalo con PayPal",
             card2Title: "Tu Presencia",
             card2Desc: "Tu presencia es el mejor regalo 💕",
+            giftTiers: {
+                t20: "Un juguete para Libby (¡y 5 minutos de paz!) 🧸",
+                t30: "Un vestido de Zara (¡la moda es lo primero!) 👗",
+                t40: "Kit de Supervivencia (Café + Vino + Tapones) ☕🍷",
+            },
         },
         gallery: {
             title: "Galería",

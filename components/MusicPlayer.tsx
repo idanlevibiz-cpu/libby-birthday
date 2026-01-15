@@ -37,7 +37,7 @@ export function MusicPlayer({ isPlaying }: MusicPlayerProps) {
             <div className="bg-white/80 backdrop-blur-2xl p-4 rounded-[32px] shadow-2xl border border-white/60 flex items-center gap-4 transition-all hover:scale-105 active:scale-95 group">
 
                 {/* Hidden Audio Element */}
-                <audio ref={audioRef} src="/party-birthday.mp3" loop playsInline />
+                <audio ref={audioRef} src="/happy-birthday.mp3" loop playsInline />
 
                 {/* Animated Icon */}
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-colors ${isAudioPlaying ? 'bg-pink-500 animate-pulse' : 'bg-gray-200'}`}>

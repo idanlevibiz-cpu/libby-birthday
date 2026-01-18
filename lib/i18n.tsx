@@ -40,6 +40,7 @@ type Translations = {
         card1Desc: string;
         card2Title: string;
         card2Desc: string;
+        amazonWishlist: string;
         giftTiers: {
             t20: string;
             t30: string;
@@ -89,6 +90,7 @@ const translations: Record<Language, Translations> = {
             card1Desc: "Send a Gift with PayPal",
             card2Title: "Your Presence",
             card2Desc: "Your presence is the greatest gift 💕",
+            amazonWishlist: "Amazon Wishlist",
             giftTiers: {
                 t20: "A toy for Libby (and 5 minutes of peace for us!) 🧸",
                 t30: "A stylish dress from Zara (fashion first!) 👗",
@@ -136,6 +138,7 @@ const translations: Record<Language, Translations> = {
             card1Desc: "Enviar un regalo con PayPal",
             card2Title: "Tu Presencia",
             card2Desc: "Tu presencia es el mejor regalo 💕",
+            amazonWishlist: "Lista de Deseos Amazon",
             giftTiers: {
                 t20: "Un juguete para Libby (¡y 5 minutos de paz!) 🧸",
                 t30: "Un vestido de Zara (¡la moda es lo primero!) 👗",

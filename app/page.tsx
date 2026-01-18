@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Envelope } from "@/components/Envelope";
 import { Invitation } from "@/components/Invitation";
+import { MusicPlayer } from "@/components/MusicPlayer";
 
 export default function Home() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
@@ -23,6 +24,8 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      <MusicPlayer isPlaying={isEnvelopeOpen} />
 
       {!isEnvelopeOpen && <Footer />}
     </main>

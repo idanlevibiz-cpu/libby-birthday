@@ -15,6 +15,15 @@ export function MusicPlayer({ isPlaying }: MusicPlayerProps) {
     useEffect(() => {
         if (isPlaying) {
             setIsVisible(true);
+            // Attempt autoplay since it was triggered by a user gesture (opening envelope)
+            const timeoutId = setTimeout(() => {
+                if (audioRef.current) {
+                    audioRef.current.play()
+                        .then(() => setIsAudioPlaying(true))
+                        .catch(e => console.log("Autoplay prevented or failed, user will need to click play:", e));
+                }
+            }, 1000); // Small delay for the animation
+            return () => clearTimeout(timeoutId);
         }
     }, [isPlaying]);
 

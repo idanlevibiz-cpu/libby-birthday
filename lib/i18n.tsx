@@ -8,6 +8,9 @@ type Translations = {
     header: {
         brand: string;
     };
+    common: {
+        copied: string;
+    };
     footer: {
         developedBy: string;
     };
@@ -38,6 +41,7 @@ type Translations = {
         title: string;
         card1Title: string;
         card1Desc: string;
+        athNumber: string;
         card2Title: string;
         card2Desc: string;
         amazonWishlist: string;
@@ -57,6 +61,9 @@ const translations: Record<Language, Translations> = {
     en: {
         header: {
             brand: "LIBBY'S BIRTHDAY",
+        },
+        common: {
+            copied: "Number copied!",
         },
         footer: {
             developedBy: "Designed & Produced by Epica Events",
@@ -85,9 +92,10 @@ const translations: Record<Language, Translations> = {
             error: "Oops! Something went wrong. Please try again.",
         },
         gifts: {
-            title: "Registry & Gifts",
-            card1Title: "PayPal Gift",
-            card1Desc: "Send a Gift with PayPal",
+            title: "Gifts",
+            card1Title: "Gift",
+            card1Desc: "Send a Gift with ATH Móvil",
+            athNumber: "939-219-0742",
             card2Title: "Your Presence",
             card2Desc: "Your presence is the greatest gift 💕",
             amazonWishlist: "Amazon Wishlist",
@@ -105,6 +113,9 @@ const translations: Record<Language, Translations> = {
     es: {
         header: {
             brand: "CUMPLEAÑOS DE LIBBY",
+        },
+        common: {
+            copied: "¡Número copiado!",
         },
         footer: {
             developedBy: "Diseñado y Producido por Epica Events",
@@ -133,9 +144,10 @@ const translations: Record<Language, Translations> = {
             error: "¡Ups! Algo salió mal. Por favor, intenta de nuevo.",
         },
         gifts: {
-            title: "Registro y Regalos",
-            card1Title: "Regalo PayPal",
-            card1Desc: "Enviar un regalo con PayPal",
+            title: "Regalos",
+            card1Title: "Regalo",
+            card1Desc: "Enviar un regalo con ATH Móvil",
+            athNumber: "939-219-0742",
             card2Title: "Tu Presencia",
             card2Desc: "Tu presencia es el mejor regalo 💕",
             amazonWishlist: "Lista de Deseos Amazon",

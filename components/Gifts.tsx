@@ -63,16 +63,22 @@ export function Gifts() {
 
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <a
-                            href="https://paypal.me/epicaevents"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group/btn relative w-full sm:w-auto inline-flex items-center justify-center gap-4 bg-pink-500 text-white px-10 py-5 rounded-3xl font-black text-lg hover:bg-pink-600 transition-all duration-300 shadow-xl hover:shadow-pink-200 hover:-translate-y-1 active:scale-95 overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite]" />
-                            <Heart className="w-6 h-6 fill-white animate-pulse" />
-                            <span className="relative z-10">{t.gifts.card1Desc}</span>
-                        </a>
+                        <div className="relative group/ath w-full sm:w-auto">
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText('9392190742');
+                                    alert(t.common.copied);
+                                }}
+                                className="group/btn relative w-full sm:w-auto inline-flex items-center justify-center gap-4 bg-orange-500 text-white px-10 py-5 rounded-3xl font-black text-lg hover:bg-orange-600 transition-all duration-300 shadow-xl hover:shadow-orange-200 hover:-translate-y-1 active:scale-95 overflow-hidden"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite]" />
+                                <Heart className="w-6 h-6 fill-white animate-pulse" />
+                                <span className="relative z-10">{t.gifts.card1Desc}</span>
+                            </button>
+                            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover/ath:opacity-100 transition-opacity bg-gray-800 text-white text-[10px] px-3 py-1 rounded-full whitespace-nowrap pointer-events-none">
+                                {t.gifts.athNumber} (Click to copy)
+                            </div>
+                        </div>
 
                         <a
                             href="https://www.amazon.com/hz/wishlist/ls/F2R4TAMCCYP4?ref_=wl_share"
@@ -87,8 +93,11 @@ export function Gifts() {
                     </div>
 
                     <div className="mt-8 pt-8 border-t border-pink-50 flex items-center justify-center gap-3 text-gray-400">
-                        <ShoppingBag className="w-4 h-4" />
-                        <span className="text-xs font-mono uppercase tracking-widest">medspa123ae@gmail.com</span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-mono uppercase tracking-widest bg-pink-50 px-3 py-1 rounded-full text-pink-500 font-bold">
+                                ATH Móvil: {t.gifts.athNumber}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n";
@@ -25,14 +27,32 @@ export function Envelope({ onOpen }: EnvelopeProps) {
         onOpen();
     };
 
-    // Ensure video tries to play with sound on mount
+    // Ensure video tries to play with sound on mount, fallback to muted if blocked
     useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.play().catch((error) => {
-                console.log("Autoplay with sound might be blocked by browser:", error);
-                // If blocked, we stay muted or wait for user interaction
-            });
-        }
+        const attemptPlay = async () => {
+            if (videoRef.current) {
+                try {
+                    // Try playing unmuted first
+                    videoRef.current.muted = false;
+                    await videoRef.current.play();
+                    setIsMuted(false);
+                } catch (error) {
+                    console.log("Unmuted autoplay blocked, falling back to muted:", error);
+                    // Fallback: try playing muted
+                    if (videoRef.current) {
+                        videoRef.current.muted = true;
+                        setIsMuted(true);
+                        try {
+                            await videoRef.current.play();
+                        } catch (mutedError) {
+                            console.error("Muted autoplay also failed:", mutedError);
+                        }
+                    }
+                }
+            }
+        };
+
+        attemptPlay();
     }, []);
 
     return (

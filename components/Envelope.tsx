@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n";
 import { Volume2, VolumeX } from "lucide-react";
@@ -13,23 +11,40 @@ export function Envelope({ onOpen }: EnvelopeProps) {
     const { t } = useLanguage();
     const [isOpening, setIsOpening] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     const handleOpen = () => {
         if (isOpening) return;
         setIsOpening(true);
+
+        // Mute video when opening to follow user request
+        if (videoRef.current) {
+            videoRef.current.muted = true;
+        }
+
         onOpen();
     };
+
+    // Ensure video tries to play with sound on mount
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.play().catch((error) => {
+                console.log("Autoplay with sound might be blocked by browser:", error);
+                // If blocked, we stay muted or wait for user interaction
+            });
+        }
+    }, []);
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen w-full bg-black relative z-40 overflow-hidden">
             {/* Background Video */}
             <video
+                ref={videoRef}
                 autoPlay
                 loop
                 muted={isMuted}
                 playsInline
                 preload="auto"
-                poster="/envelope-mia-2.jpg"
                 className="absolute inset-0 w-full h-full object-cover opacity-100"
             >
                 <source src="/background-video.mp4" type="video/mp4" />

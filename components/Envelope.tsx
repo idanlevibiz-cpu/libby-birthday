@@ -12,7 +12,7 @@ interface EnvelopeProps {
 export function Envelope({ onOpen }: EnvelopeProps) {
     const { t } = useLanguage();
     const [isOpening, setIsOpening] = useState(false);
-    const [isMuted, setIsMuted] = useState(true);
+    const [isMuted, setIsMuted] = useState(false);
 
     const handleOpen = () => {
         if (isOpening) return;
@@ -48,13 +48,13 @@ export function Envelope({ onOpen }: EnvelopeProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.5 }}
-                className="relative z-10 w-full h-full flex flex-col items-center"
+                className="relative z-10 w-full h-full"
                 onClick={handleOpen}
             >
-                {/* CTA Button - Positioned absolutely near the bottom 10% to be "directly under the video content" */}
+                {/* CTA Button - Positioned FIXED at the very bottom (40px from bottom) to override any layout issues */}
                 <motion.button
-                    className="absolute bottom-[8%] px-12 py-5 bg-pink-500 text-white rounded-full font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(236,72,153,0.5)] hover:bg-pink-600 transition-all hover:scale-105 active:scale-95 border-2 border-white/50 backdrop-blur-sm"
-                    animate={isOpening ? { opacity: 0, scale: 0.8, y: 50 } : { opacity: 1, scale: 1, y: 0 }}
+                    className="fixed bottom-10 left-1/2 -translate-x-1/2 px-12 py-5 bg-pink-500 text-white rounded-full font-bold tracking-widest uppercase shadow-[0_0_30px_rgba(236,72,153,0.6)] hover:bg-pink-600 transition-all hover:scale-105 active:scale-95 border-2 border-white/50 backdrop-blur-sm z-[100]"
+                    animate={isOpening ? { opacity: 0, scale: 0.8, y: 100 } : { opacity: 1, scale: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
                     {t.landing.cta}

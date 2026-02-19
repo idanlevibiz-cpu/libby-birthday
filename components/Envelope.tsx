@@ -28,6 +28,8 @@ export function Envelope({ onOpen }: EnvelopeProps) {
                 loop
                 muted={isMuted}
                 playsInline
+                preload="auto"
+                poster="/envelope-mia-2.jpg"
                 className="absolute inset-0 w-full h-full object-cover opacity-100"
             >
                 <source src="/background-video.mp4" type="video/mp4" />

@@ -15,8 +15,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Mia's 2nd Birthday",
-  description: "Oh Two-dless! We can’t believe it, but yes, it’s true!",
+  title: "¡Mia Cumple 2!",
+  description: "¡Oh Two-dless! No podemos creerlo, pero sí, ¡es verdad!",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${baloo.variable} ${poppins.variable} antialiased`}
       >
